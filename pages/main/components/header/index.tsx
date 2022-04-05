@@ -19,7 +19,7 @@ const Header: React.FC = () => {
 	const dispatch = useAppDispatch();
 
 	const addNewItem = (value: string) =>
-		dispatch(addItem({ id: generateUid(), content: value, status: true }));
+		dispatch(addItem({ id: generateUid(), content: value, status: false }));
 
 	return (
 		<View>

@@ -10,8 +10,19 @@ import {
 import { useSelector } from 'react-redux';
 import { changeStatus, removeItem, changeContent } from 'slices/items-slice';
 import { Store, useAppDispatch } from 'store';
-import { Item } from 'types';
+import { FiltrationType, Item } from 'types';
 import { ListItemStyles } from './styles';
+
+const filterItem = (filtrationType: FiltrationType, item: Item) => {
+	switch (filtrationType) {
+		case FiltrationType.ACTIVE:
+			return !item.status;
+		case FiltrationType.COMPLETED:
+			return item.status;
+		default:
+			return item;
+	}
+};
 
 const ListItem: React.FC<Item> = ({ id, content, status }) => {
 	const [input, setInput] = useState(content);
@@ -50,12 +61,18 @@ const ListItem: React.FC<Item> = ({ id, content, status }) => {
 	);
 };
 
-const List: React.FC = () => {
+const List: React.FC<{ filtrationType: FiltrationType }> = ({
+	filtrationType,
+}) => {
 	const { items } = useSelector((state: Store) => state.itemsReducer);
+
+	const filteredItems = items.filter((item) =>
+		filterItem(filtrationType, item),
+	);
 
 	return (
 		<ScrollView>
-			{items.map((item) => (
+			{filteredItems.map((item) => (
 				<ListItem key={item.id} {...item} />
 			))}
 		</ScrollView>
