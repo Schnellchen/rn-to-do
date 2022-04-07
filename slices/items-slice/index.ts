@@ -17,9 +17,11 @@ const itemsSlice = createSlice({
 			state.items[index].status = !state.items[index].status;
 		},
 		changeStatuses: (state, { payload }: PayloadAction<boolean>) => {
-			console.log(payload);
+			state.items = state.items.map((item) => {
+				item.status = payload;
 
-			state.items.forEach((item) => item.status === payload);
+				return item;
+			});
 		},
 		changeContent: (
 			state,

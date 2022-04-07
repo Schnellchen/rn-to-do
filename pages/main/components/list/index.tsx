@@ -1,5 +1,5 @@
 import CheckBox from '@react-native-community/checkbox';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	ScrollView,
 	Text,
@@ -61,14 +61,21 @@ const ListItem: React.FC<Item> = ({ id, content, status }) => {
 	);
 };
 
-const List: React.FC<{ filtrationType: FiltrationType }> = ({
-	filtrationType,
-}) => {
+const List: React.FC<{
+	filtrationType: FiltrationType;
+	setAllCompleted: (value: boolean) => void;
+}> = ({ filtrationType, setAllCompleted }) => {
 	const { items } = useSelector((state: Store) => state.itemsReducer);
+
+	const hasActive = items.some((item) => !item.status);
 
 	const filteredItems = items.filter((item) =>
 		filterItem(filtrationType, item),
 	);
+
+	useEffect(() => {
+		setAllCompleted(!hasActive);
+	}, [hasActive, setAllCompleted]);
 
 	return (
 		<ScrollView>

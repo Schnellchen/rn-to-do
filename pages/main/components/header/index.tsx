@@ -1,11 +1,15 @@
+import CheckBox from '@react-native-community/checkbox';
 import { generateUid } from 'helpers/generate-uid';
 import React from 'react';
 import { useForm, Controller } from 'react-hook-form';
 import { View, TextInput, Button } from 'react-native';
-import { addItem } from 'slices/items-slice';
+import { addItem, changeStatuses } from 'slices/items-slice';
 import { useAppDispatch } from 'store';
 
-const Header: React.FC = () => {
+const Header: React.FC<{
+	isAllCompleted: boolean;
+	setAllCompleted: (value: boolean) => void;
+}> = ({ isAllCompleted, setAllCompleted }) => {
 	const {
 		control,
 		handleSubmit,
@@ -21,8 +25,18 @@ const Header: React.FC = () => {
 	const addNewItem = (value: string) =>
 		dispatch(addItem({ id: generateUid(), content: value, status: false }));
 
+	const changeItemsStatuses = (value: boolean) => {
+		setAllCompleted(value);
+		dispatch(changeStatuses(value));
+	};
+
 	return (
 		<View>
+			<CheckBox
+				value={isAllCompleted}
+				onValueChange={(value) => changeItemsStatuses(value)}
+			/>
+
 			<Controller
 				control={control}
 				render={({ field: { onChange, onBlur, value } }) => (
@@ -39,7 +53,7 @@ const Header: React.FC = () => {
 			/>
 
 			<Button
-				title={'Add'}
+				title="Add"
 				disabled={!!errors?.input}
 				onPress={handleSubmit(({ input }) => addNewItem(input))}
 			/>
