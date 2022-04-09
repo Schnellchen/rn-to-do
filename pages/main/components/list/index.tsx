@@ -1,17 +1,12 @@
 import CheckBox from '@react-native-community/checkbox';
 import React, { useEffect, useState } from 'react';
-import {
-	ScrollView,
-	Text,
-	TextInput,
-	TouchableOpacity,
-	View,
-} from 'react-native';
+import { ScrollView, TextInput, TouchableOpacity, View } from 'react-native';
 import { useSelector } from 'react-redux';
 import { changeStatus, removeItem, changeContent } from 'slices/items-slice';
 import { Store, useAppDispatch } from 'store';
 import { FiltrationType, Item } from 'types';
 import { ListStyles, ListItemStyles } from './styles';
+import DeleteIcon from 'assets/icons/delete.svg';
 
 const filterItem = (filtrationType: FiltrationType, item: Item) => {
 	switch (filtrationType) {
@@ -54,7 +49,7 @@ const ListItem: React.FC<Item> = ({ id, content, status }) => {
 
 			<View style={ListItemStyles.side}>
 				<TouchableOpacity onPress={() => removeListItem(id)}>
-					<Text>X</Text>
+					<DeleteIcon width={15} height={15} fill={'gray'} />
 				</TouchableOpacity>
 			</View>
 		</View>
