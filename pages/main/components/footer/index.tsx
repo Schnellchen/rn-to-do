@@ -15,21 +15,31 @@ const Footer: React.FC<{
 
 	return (
 		<View style={FooterStyles.wrapper}>
-			{Object.values(FiltrationType).map((type) => (
-				<TouchableOpacity
-					onPress={() => setFiltrationType(type)}
-					key={type}
-					style={
-						filtrationType === type
-							? FooterStyles.activeButton
-							: FooterStyles.button
-					}
-				>
-					<Text>{type}</Text>
-				</TouchableOpacity>
-			))}
+			{Object.values(FiltrationType).map((type) => {
+				const isActive = filtrationType === type;
 
-			<TouchableOpacity onPress={removeCompletedItems}>
+				return (
+					<TouchableOpacity
+						onPress={() => setFiltrationType(type)}
+						key={type}
+						style={{
+							...FooterStyles.button,
+							...(isActive
+								? FooterStyles.activeButton
+								: FooterStyles.inactiveButton),
+						}}
+					>
+						<Text style={isActive ? FooterStyles.activeButtonText : {}}>
+							{type}
+						</Text>
+					</TouchableOpacity>
+				);
+			})}
+
+			<TouchableOpacity
+				onPress={removeCompletedItems}
+				style={{ ...FooterStyles.button, ...FooterStyles.removeButton }}
+			>
 				<Text>Remove completed</Text>
 			</TouchableOpacity>
 		</View>

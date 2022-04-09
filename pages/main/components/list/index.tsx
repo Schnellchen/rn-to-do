@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux';
 import { changeStatus, removeItem, changeContent } from 'slices/items-slice';
 import { Store, useAppDispatch } from 'store';
 import { FiltrationType, Item } from 'types';
-import { ListItemStyles } from './styles';
+import { ListStyles, ListItemStyles } from './styles';
 
 const filterItem = (filtrationType: FiltrationType, item: Item) => {
 	switch (filtrationType) {
@@ -78,7 +78,7 @@ const List: React.FC<{
 	}, [hasActive, setAllCompleted]);
 
 	return (
-		<ScrollView>
+		<ScrollView contentContainerStyle={ListStyles.wrapper}>
 			{filteredItems.map((item) => (
 				<ListItem key={item.id} {...item} />
 			))}
